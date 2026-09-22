@@ -18,5 +18,5 @@ const app = isFirebaseConfigured
   : null
 
 export const auth = app ? getAuth(app) : null
-export const db = app ? getFirestore(app) : null
+export const db = app ? getFirestore(app, 'default') : null
 export const persistenceMode = isFirebaseConfigured ? 'firebase' : 'demo-local'
