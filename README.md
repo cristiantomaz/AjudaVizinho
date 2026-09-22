@@ -40,7 +40,27 @@ O AjudaVizinho organiza doações locais em uma aplicação web responsiva. Usu�
 
 ## 🚀 Como executar
 
-As instruções serão adicionadas após a configuração inicial da aplicação.
+### Pré-requisitos
+
+- Node.js 20 ou superior
+- npm
+
+### Instalação
+
+\`\`\`bash
+npm install
+cp .env.example .env
+npm run dev
+\`\`\`
+
+Acesse o endereço exibido pelo Vite no terminal. Para validar a versão de produção:
+
+\`\`\`bash
+npm run build
+npm run preview
+\`\`\`
+
+> A interface atual usa dados demonstrativos em memória. Firebase Authentication e Cloud Firestore serão conectados no próximo incremento.
 
 ## 📂 Documentação
 
@@ -50,7 +70,7 @@ As instruções serão adicionadas após a configuração inicial da aplicação
 
 ## 📊 Status
 
-🟡 Em planejamento e configuração inicial.
+🟡 Interface inicial funcional em desenvolvimento; integração com Firebase pendente.
 
 ## 📚 Diretrizes acadêmicas
 
