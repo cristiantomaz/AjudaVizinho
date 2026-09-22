@@ -1,4 +1,7 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { login, logout, observeAuth, register } from './services/authService.js'
+import { createDonation as persistDonation, listDonations } from './services/donationService.js'
+import { persistenceMode } from './services/firebase.js'
 
 const categories = ['Todos', 'Roupas', 'Móveis', 'Livros', 'Brinquedos', 'Eletrônicos']
 
@@ -41,7 +44,7 @@ const initialDonations = [
   },
 ]
 
-function Header({ onDonate }) {
+function Header({ currentUser, onAuth, onDonate, onLogout }) {
   return (
     <header className="header">
       <a className="brand" href="#inicio" aria-label="AjudaVizinho — início">
@@ -51,6 +54,14 @@ function Header({ onDonate }) {
       <nav className="nav" aria-label="Navegação principal">
         <a href="#doacoes">Doações</a>
         <a href="#como-funciona">Como funciona</a>
+        {currentUser ? (
+          <div className="user-menu">
+            <span>Olá, {currentUser.name.split(' ')[0]}</span>
+            <button className="link-button" type="button" onClick={onLogout}>Sair</button>
+          </div>
+        ) : (
+          <button className="link-button" type="button" onClick={onAuth}>Entrar</button>
+        )}
         <button className="button button-small" type="button" onClick={onDonate}>Doar item</button>
       </nav>
     </header>
@@ -131,13 +142,80 @@ function DonateModal({ onClose, onCreate }) {
   )
 }
 
+function AuthModal({ onAuthenticated, onClose }) {
+  const [mode, setMode] = useState('login')
+  const [form, setForm] = useState({ name: '', email: '', password: '', neighborhood: '' })
+  const [error, setError] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  async function handleSubmit(event) {
+    event.preventDefault()
+    setError('')
+    setLoading(true)
+    try {
+      const user = mode === 'register' ? await register(form) : await login(form)
+      onAuthenticated(user)
+    } catch (caughtError) {
+      setError(caughtError.message || 'Não foi possível concluir a autenticação.')
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  function changeMode(nextMode) {
+    setMode(nextMode)
+    setError('')
+  }
+
+  return (
+    <div className="modal-backdrop" role="presentation" onMouseDown={onClose}>
+      <section className="modal modal-form" role="dialog" aria-modal="true" aria-labelledby="auth-title" onMouseDown={(event) => event.stopPropagation()}>
+        <button className="close-button" type="button" onClick={onClose} aria-label="Fechar autenticação">×</button>
+        <p className="eyebrow">Sua conta</p>
+        <h2 id="auth-title">{mode === 'login' ? 'Entre para continuar' : 'Faça parte da comunidade'}</h2>
+        <div className="auth-tabs" role="tablist" aria-label="Tipo de acesso">
+          <button className={mode === 'login' ? 'active' : ''} type="button" onClick={() => changeMode('login')}>Entrar</button>
+          <button className={mode === 'register' ? 'active' : ''} type="button" onClick={() => changeMode('register')}>Criar conta</button>
+        </div>
+        <form onSubmit={handleSubmit}>
+          {mode === 'register' && (
+            <>
+              <label>Nome<input required maxLength="80" autoComplete="name" value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} /></label>
+              <label>Bairro<input required maxLength="40" autoComplete="address-level3" value={form.neighborhood} onChange={(e) => setForm({ ...form, neighborhood: e.target.value })} /></label>
+            </>
+          )}
+          <label>E-mail<input required type="email" autoComplete="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} /></label>
+          <label>Senha<input required type="password" minLength="6" autoComplete={mode === 'login' ? 'current-password' : 'new-password'} value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} /></label>
+          {error && <p className="form-error" role="alert">{error}</p>}
+          <button className="button button-full" type="submit" disabled={loading}>{loading ? 'Aguarde…' : mode === 'login' ? 'Entrar' : 'Criar conta'}</button>
+        </form>
+        {persistenceMode === 'demo-local' && <small>Modo demonstração: a conta fica somente neste navegador até o Firebase ser configurado.</small>}
+      </section>
+    </div>
+  )
+}
+
 export default function App() {
   const [donations, setDonations] = useState(initialDonations)
   const [query, setQuery] = useState('')
   const [category, setCategory] = useState('Todos')
   const [selected, setSelected] = useState(null)
   const [donateOpen, setDonateOpen] = useState(false)
+  const [authOpen, setAuthOpen] = useState(false)
+  const [currentUser, setCurrentUser] = useState(null)
+  const [loadingDonations, setLoadingDonations] = useState(true)
   const [notice, setNotice] = useState('')
+
+  useEffect(() => observeAuth(setCurrentUser), [])
+
+  useEffect(() => {
+    let active = true
+    listDonations(initialDonations)
+      .then((items) => { if (active) setDonations(items) })
+      .catch(() => { if (active) setNotice('Não foi possível carregar as doações. Exibindo dados demonstrativos.') })
+      .finally(() => { if (active) setLoadingDonations(false) })
+    return () => { active = false }
+  }, [])
 
   const filteredDonations = useMemo(() => {
     const normalizedQuery = query.trim().toLocaleLowerCase('pt-BR')
@@ -148,17 +226,41 @@ export default function App() {
     })
   }, [category, donations, query])
 
-  function createDonation(form) {
+  function openDonationForm() {
+    if (!currentUser) {
+      setNotice('Entre ou crie uma conta antes de publicar uma doação.')
+      setAuthOpen(true)
+      return
+    }
+    setDonateOpen(true)
+  }
+
+  async function createDonation(form) {
     const iconByCategory = { Roupas: '👕', Móveis: '🪑', Livros: '📚', Brinquedos: '🧸', Eletrônicos: '🔌' }
-    setDonations((current) => [{ id: Date.now(), ...form, icon: iconByCategory[form.category], posted: 'Agora' }, ...current])
-    setDonateOpen(false)
-    setNotice('Doação publicada nesta sessão. A persistência será conectada ao Firebase na próxima etapa.')
+    try {
+      const donation = await persistDonation({ ...form, icon: iconByCategory[form.category] }, currentUser)
+      setDonations((current) => [donation, ...current.filter((item) => item.id !== donation.id)])
+      setDonateOpen(false)
+      setNotice(persistenceMode === 'firebase' ? 'Doação publicada no Firebase.' : 'Doação salva neste navegador no modo demonstração.')
+    } catch {
+      setNotice('Não foi possível publicar a doação. Verifique os dados e tente novamente.')
+    }
+  }
+
+  async function handleLogout() {
+    await logout()
+    setCurrentUser(null)
+    setNotice('Sessão encerrada.')
   }
 
   return (
     <>
-      <Header onDonate={() => setDonateOpen(true)} />
+      <Header currentUser={currentUser} onAuth={() => setAuthOpen(true)} onDonate={openDonationForm} onLogout={handleLogout} />
       <main>
+        <div className={`mode-banner ${persistenceMode === 'firebase' ? 'connected' : ''}`} role="status">
+          <strong>{persistenceMode === 'firebase' ? 'Firebase conectado' : 'Modo demonstração local'}</strong>
+          <span>{persistenceMode === 'firebase' ? 'Contas e doações são persistidas na nuvem.' : 'Configure o Firebase para compartilhar dados entre dispositivos.'}</span>
+        </div>
         <section className="hero" id="inicio">
           <div className="hero-copy">
             <p className="eyebrow">Solidariedade começa perto</p>
@@ -166,7 +268,7 @@ export default function App() {
             <p>Doe itens em bom estado, encontre o que precisa e fortaleça sua comunidade de um jeito simples e seguro.</p>
             <div className="hero-actions">
               <a className="button" href="#doacoes">Encontrar doações</a>
-              <button className="button button-secondary" type="button" onClick={() => setDonateOpen(true)}>Quero doar</button>
+              <button className="button button-secondary" type="button" onClick={openDonationForm}>Quero doar</button>
             </div>
             <div className="trust-row" aria-label="Diferenciais">
               <span>✓ Gratuito</span><span>✓ Local</span><span>✓ Sem venda</span>
@@ -202,7 +304,9 @@ export default function App() {
             <div><p className="eyebrow">Perto de você</p><h2>Doações disponíveis</h2></div>
             <p>{filteredDonations.length} {filteredDonations.length === 1 ? 'item encontrado' : 'itens encontrados'}</p>
           </div>
-          {filteredDonations.length > 0 ? (
+          {loadingDonations ? (
+            <div className="empty-state" role="status"><span aria-hidden="true">◌</span><h3>Carregando doações</h3><p>Aguarde um instante.</p></div>
+          ) : filteredDonations.length > 0 ? (
             <div className="donation-grid">{filteredDonations.map((donation) => <DonationCard key={donation.id} donation={donation} onSelect={setSelected} />)}</div>
           ) : (
             <div className="empty-state"><span aria-hidden="true">⌕</span><h3>Nenhuma doação encontrada</h3><p>Tente buscar outro termo ou selecionar uma categoria diferente.</p></div>
@@ -221,6 +325,7 @@ export default function App() {
       <footer><strong>AjudaVizinho</strong><span>Projeto acadêmico · Ciência da Computação</span></footer>
       <DonationModal donation={selected} onClose={() => setSelected(null)} />
       {donateOpen && <DonateModal onClose={() => setDonateOpen(false)} onCreate={createDonation} />}
+      {authOpen && <AuthModal onClose={() => setAuthOpen(false)} onAuthenticated={(user) => { setCurrentUser(user); setAuthOpen(false); setNotice(`Bem-vindo, ${user.name.split(' ')[0]}!`) }} />}
     </>
   )
 }
