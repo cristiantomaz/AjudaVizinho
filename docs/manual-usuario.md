@@ -9,7 +9,10 @@ Clique em **Entrar**, escolha **Criar conta** e informe nome, bairro, e-mail e s
 1. Entre em sua conta.
 2. Clique em **Doar item**.
 3. Informe nome, categoria, bairro e descrição.
-4. Clique em **Publicar doação**.
+4. Se desejar, selecione uma foto JPG, PNG ou WebP de até 8 MB e confira a pré-visualização.
+5. Clique em **Publicar doação**.
+
+A foto é opcional e reduzida automaticamente antes do envio. Durante a edição, o doador pode substituir ou remover a imagem.
 
 ## Pesquisar
 

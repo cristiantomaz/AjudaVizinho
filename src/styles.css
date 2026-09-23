@@ -80,6 +80,7 @@ h2 { margin-bottom: 12px; font-size: clamp(2rem, 3vw, 3.3rem); line-height: 1.05
 .donation-card { overflow: hidden; border: 1px solid var(--line); border-radius: 24px; background: var(--paper); transition: transform .22s, box-shadow .22s; }
 .donation-card:hover { transform: translateY(-5px); box-shadow: 0 18px 40px rgba(23,53,46,.1); }
 .card-visual { min-height: 185px; display: grid; place-items: center; position: relative; font-size: 4.5rem; }
+.card-visual img { width: 100%; height: 185px; display: block; object-fit: cover; }
 .visual-0 { background: #f9dfcd; }.visual-1 { background: #d8e8dd; }.visual-2 { background: #e3e0f2; }.visual-3 { background: #f5eabf; }
 .status { position: absolute; top: 14px; left: 14px; padding: 7px 11px; border-radius: 999px; color: var(--green); background: white; font-size: .72rem; font-weight: 800; text-transform: uppercase; letter-spacing: .06em; }
 .status-reserved { color: #7a4c08; background: #fff0c2; }
@@ -105,10 +106,18 @@ footer { min-height: 100px; display: flex; justify-content: space-between; gap: 
 .modal h2 { font-size: 2rem; }.modal > p:not(.eyebrow):not(.location) { color: var(--muted); line-height: 1.65; }
 .modal small { display: block; margin-top: 14px; color: var(--muted); text-align: center; }
 .modal-icon { width: 104px; height: 104px; margin-bottom: 24px; display: grid; place-items: center; border-radius: 30px; background: #e2eedf; font-size: 3.2rem; }
+.modal-image { width: 100%; max-height: 360px; margin-bottom: 24px; display: block; border-radius: 20px; object-fit: cover; background: #edf2ee; }
 .close-button { position: absolute; top: 18px; right: 18px; width: 38px; height: 38px; border: 0; border-radius: 50%; color: var(--green); background: #edf2ee; font-size: 1.5rem; cursor: pointer; }
 .modal-form form { display: grid; gap: 16px; margin-top: 24px; }
 .modal-form label { display: grid; gap: 7px; color: #3c554e; font-size: .83rem; font-weight: 800; }
 .modal-form input, .modal-form select, .modal-form textarea { width: 100%; border: 1px solid #cbd7d1; border-radius: 12px; padding: 12px; color: var(--ink); background: white; resize: vertical; }
+.modal-form input[type="file"] { padding: 9px; cursor: pointer; }
+.optional-label { color: var(--muted); font-weight: 500; }
+.field-help { margin: -10px 0 0 !important; text-align: left !important; }
+.image-progress { margin: 0; color: var(--green); font-size: .86rem; font-weight: 700; }
+.image-preview { position: relative; overflow: hidden; border: 1px solid var(--line); border-radius: 16px; background: #edf2ee; }
+.image-preview img { width: 100%; max-height: 260px; display: block; object-fit: contain; }
+.remove-image-button { position: absolute; right: 10px; bottom: 10px; padding: 8px 11px; border: 0; border-radius: 999px; color: #8f2d24; background: rgba(255,255,255,.94); font-size: .78rem; font-weight: 800; cursor: pointer; box-shadow: 0 4px 14px rgba(0,0,0,.16); }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 .auth-tabs { margin: 18px 0 6px; padding: 4px; display: grid; grid-template-columns: 1fr 1fr; border-radius: 12px; background: #edf2ee; }
 .auth-tabs button { padding: 10px; border: 0; border-radius: 9px; color: #52665f; background: transparent; font-weight: 800; cursor: pointer; }

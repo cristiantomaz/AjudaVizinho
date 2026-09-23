@@ -33,7 +33,7 @@ describe('doações no modo demonstração', () => {
 
   it('cria uma doação associada ao usuário autenticado', async () => {
     const donation = await createDonation(
-      { title: 'Cesta básica', category: 'Alimentos' },
+      { title: 'Cesta básica', category: 'Alimentos', imageData: 'data:image/jpeg;base64,YQ==' },
       { id: 'usuario-1', name: 'Cristian' },
     )
 
@@ -42,6 +42,7 @@ describe('doações no modo demonstração', () => {
       ownerId: 'usuario-1',
       ownerName: 'Cristian',
       status: 'available',
+      imageData: 'data:image/jpeg;base64,YQ==',
     })
     await expect(listDonations()).resolves.toEqual([donation])
   })
