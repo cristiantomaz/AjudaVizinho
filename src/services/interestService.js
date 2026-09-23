@@ -1,7 +1,6 @@
 import {
   collection,
   doc,
-  getDoc,
   getDocs,
   query,
   serverTimestamp,
@@ -41,8 +40,14 @@ export async function createInterest(donation, user) {
 
   if (isFirebaseConfigured) {
     const reference = doc(db, 'interests', id)
-    if ((await getDoc(reference)).exists()) throw new Error('Você já demonstrou interesse neste item.')
-    await setDoc(reference, { ...interest, createdAt: serverTimestamp() })
+    try {
+      await setDoc(reference, { ...interest, createdAt: serverTimestamp() })
+    } catch (error) {
+      if (error?.code === 'permission-denied') {
+        throw new Error('Não foi possível enviar o interesse. Você pode já ter solicitado este item ou ele não está mais disponível.')
+      }
+      throw error
+    }
     return interest
   }
 
