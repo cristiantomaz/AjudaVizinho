@@ -2,7 +2,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createStorage } from './testStorage.js'
 
 vi.mock('firebase/firestore', () => ({
-  collection: vi.fn(), doc: vi.fn(), getDoc: vi.fn(), getDocs: vi.fn(), query: vi.fn(),
+  collection: vi.fn(), doc: vi.fn(), getDocs: vi.fn(), query: vi.fn(),
   serverTimestamp: vi.fn(), setDoc: vi.fn(), updateDoc: vi.fn(), where: vi.fn(), writeBatch: vi.fn(),
 }))
 vi.mock('../src/services/firebase.js', () => ({ db: null, isFirebaseConfigured: false }))

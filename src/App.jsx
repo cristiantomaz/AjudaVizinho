@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react'
 import { login, logout, observeAuth, register } from './services/authService.js'
 import { changeDonationStatus, createDonation as persistDonation, deleteDonation, listDonations, updateDonation } from './services/donationService.js'
 import { createInterest, decideInterest, listInterests } from './services/interestService.js'
+import { prepareDonationImage } from './services/imageService.js'
 import { persistenceMode } from './services/firebase.js'
 
 const categories = ['Todos', 'Roupas', 'Móveis', 'Livros', 'Brinquedos', 'Eletrônicos']
@@ -19,20 +20,37 @@ function Header({ currentUser, onAuth, onDashboard, onDonate, onLogout }) {
 }
 
 function DonationCard({ donation, onSelect }) {
-  return <article className="donation-card"><div className={`card-visual visual-${String(donation.id).length % 4}`}><span>{donation.icon}</span><span className={`status status-${donation.status}`}>{statusLabels[donation.status] || 'Disponível'}</span></div><div className="card-content"><p className="eyebrow">{donation.category}</p><h3>{donation.title}</h3><p className="location">● {donation.neighborhood} · {donation.posted}</p><p>{donation.description}</p><button className="text-button" onClick={() => onSelect(donation)}>Ver detalhes →</button></div></article>
+  return <article className="donation-card"><div className={`card-visual visual-${String(donation.id).length % 4}`}>{donation.imageData ? <img src={donation.imageData} alt={`Foto de ${donation.title}`} /> : <span>{donation.icon}</span>}<span className={`status status-${donation.status}`}>{statusLabels[donation.status] || 'Disponível'}</span></div><div className="card-content"><p className="eyebrow">{donation.category}</p><h3>{donation.title}</h3><p className="location">● {donation.neighborhood} · {donation.posted}</p><p>{donation.description}</p><button className="text-button" onClick={() => onSelect(donation)}>Ver detalhes →</button></div></article>
 }
 
 function DonationModal({ donation, currentUser, onClose, onEdit, onDelete, onInterest, onStatus }) {
   if (!donation) return null
   const isOwner = currentUser?.id === donation.ownerId
-  return <div className="modal-backdrop" onMouseDown={onClose}><section className="modal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}><button className="close-button" onClick={onClose}>×</button><div className="modal-icon">{donation.icon}</div><p className="eyebrow">{donation.category} · {statusLabels[donation.status] || 'Disponível'}</p><h2>{donation.title}</h2><p className="location">● {donation.neighborhood} · {donation.posted}</p><p>{donation.description}</p>{isOwner ? <div className="owner-actions"><button className="button button-full" onClick={() => onEdit(donation)}>Editar publicação</button><label>Status<select value={donation.status} onChange={(event) => onStatus(donation, event.target.value)}>{Object.entries(statusLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label><button className="danger-button" onClick={() => onDelete(donation)}>Excluir publicação</button></div> : <button className="button button-full" disabled={donation.status !== 'available'} onClick={() => onInterest(donation)}>{donation.status === 'available' ? 'Tenho interesse' : 'Item indisponível'}</button>}<small>O contato será combinado somente após a aprovação do doador.</small></section></div>
+  return <div className="modal-backdrop" onMouseDown={onClose}><section className="modal" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}><button className="close-button" onClick={onClose}>×</button>{donation.imageData ? <img className="modal-image" src={donation.imageData} alt={`Foto de ${donation.title}`} /> : <div className="modal-icon">{donation.icon}</div>}<p className="eyebrow">{donation.category} · {statusLabels[donation.status] || 'Disponível'}</p><h2>{donation.title}</h2><p className="location">● {donation.neighborhood} · {donation.posted}</p><p>{donation.description}</p>{isOwner ? <div className="owner-actions"><button className="button button-full" onClick={() => onEdit(donation)}>Editar publicação</button><label>Status<select value={donation.status} onChange={(event) => onStatus(donation, event.target.value)}>{Object.entries(statusLabels).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label><button className="danger-button" onClick={() => onDelete(donation)}>Excluir publicação</button></div> : <button className="button button-full" disabled={donation.status !== 'available'} onClick={() => onInterest(donation)}>{donation.status === 'available' ? 'Tenho interesse' : 'Item indisponível'}</button>}<small>O contato será combinado somente após a aprovação do doador.</small></section></div>
 }
 
 function DonationFormModal({ donation, onClose, onSave }) {
-  const [form, setForm] = useState(donation ? { title: donation.title, category: donation.category, neighborhood: donation.neighborhood, description: donation.description } : { title: '', category: 'Roupas', neighborhood: '', description: '' })
+  const [form, setForm] = useState(donation ? { title: donation.title, category: donation.category, neighborhood: donation.neighborhood, description: donation.description, imageData: donation.imageData || '' } : { title: '', category: 'Roupas', neighborhood: '', description: '', imageData: '' })
   const [loading, setLoading] = useState(false)
+  const [processingImage, setProcessingImage] = useState(false)
+  const [imageError, setImageError] = useState('')
+  async function selectImage(event) {
+    const file = event.target.files?.[0]
+    if (!file) return
+    setImageError('')
+    setProcessingImage(true)
+    try {
+      const imageData = await prepareDonationImage(file)
+      setForm((current) => ({ ...current, imageData }))
+    } catch (error) {
+      setImageError(error.message)
+      event.target.value = ''
+    } finally {
+      setProcessingImage(false)
+    }
+  }
   async function submit(event) { event.preventDefault(); setLoading(true); await onSave(form, donation); setLoading(false) }
-  return <div className="modal-backdrop" onMouseDown={onClose}><section className="modal modal-form" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}><button className="close-button" onClick={onClose}>×</button><p className="eyebrow">{donation ? 'Editar publicação' : 'Nova publicação'}</p><h2>{donation ? 'Atualize os dados da doação.' : 'Doe algo que já cumpriu seu papel na sua casa.'}</h2><form onSubmit={submit}><label>Nome do item<input required maxLength="60" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></label><div className="form-row"><label>Categoria<select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{categories.slice(1).map((item) => <option key={item}>{item}</option>)}</select></label><label>Bairro<input required maxLength="40" value={form.neighborhood} onChange={(e) => setForm({ ...form, neighborhood: e.target.value })} /></label></div><label>Descrição<textarea required maxLength="240" rows="4" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></label><button className="button button-full" disabled={loading}>{loading ? 'Salvando…' : donation ? 'Salvar alterações' : 'Publicar doação'}</button></form></section></div>
+  return <div className="modal-backdrop" onMouseDown={onClose}><section className="modal modal-form" role="dialog" aria-modal="true" onMouseDown={(event) => event.stopPropagation()}><button className="close-button" onClick={onClose}>×</button><p className="eyebrow">{donation ? 'Editar publicação' : 'Nova publicação'}</p><h2>{donation ? 'Atualize os dados da doação.' : 'Doe algo que já cumpriu seu papel na sua casa.'}</h2><form onSubmit={submit}><label>Nome do item<input required maxLength="60" value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} /></label><div className="form-row"><label>Categoria<select value={form.category} onChange={(e) => setForm({ ...form, category: e.target.value })}>{categories.slice(1).map((item) => <option key={item}>{item}</option>)}</select></label><label>Bairro<input required maxLength="40" value={form.neighborhood} onChange={(e) => setForm({ ...form, neighborhood: e.target.value })} /></label></div><label>Descrição<textarea required maxLength="240" rows="4" value={form.description} onChange={(e) => setForm({ ...form, description: e.target.value })} /></label><label>Foto do item <span className="optional-label">(opcional)</span><input type="file" accept="image/jpeg,image/png,image/webp" onChange={selectImage} /></label><small className="field-help">JPG, PNG ou WebP, com até 8 MB. A imagem será reduzida antes do envio.</small>{processingImage && <p className="image-progress">Preparando foto…</p>}{imageError && <p className="form-error">{imageError}</p>}{form.imageData && <div className="image-preview"><img src={form.imageData} alt="Pré-visualização da foto do item" /><button type="button" className="remove-image-button" onClick={() => setForm({ ...form, imageData: '' })}>Remover foto</button></div>}<button className="button button-full" disabled={loading || processingImage}>{loading ? 'Salvando…' : processingImage ? 'Preparando foto…' : donation ? 'Salvar alterações' : 'Publicar doação'}</button></form></section></div>
 }
 
 function AuthModal({ onAuthenticated, onClose }) {
