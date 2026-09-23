@@ -2,7 +2,7 @@
 
 O AjudaVizinho possui dois modos de execução:
 
-- **Firebase:** autenticação e doações são persistidas no Firebase Authentication e Cloud Firestore.
+- **Firebase:** autenticação, doações e interesses são persistidos no Firebase Authentication e Cloud Firestore.
 - **Demonstração local:** usado automaticamente quando as variáveis do Firebase não estão preenchidas. Os dados ficam apenas no navegador e não representam autenticação de produção.
 
 ## 1. Criar o projeto
@@ -10,7 +10,7 @@ O AjudaVizinho possui dois modos de execução:
 1. Acesse o Firebase Console e crie um projeto chamado `AjudaVizinho`.
 2. Adicione um aplicativo Web.
 3. Em **Authentication**, habilite o provedor **E-mail/senha**.
-4. Crie um banco **Cloud Firestore**.
+4. Crie um banco **Cloud Firestore** com o identificador `default`.
 
 ## 2. Variáveis de ambiente
 
@@ -29,7 +29,14 @@ O arquivo `.env` não deve ser enviado ao GitHub.
 
 ## 3. Regras de segurança
 
-Publique o conteúdo de `firestore.rules` no painel do Firestore. As regras permitem leitura pública das doações, mas restringem criação a usuários autenticados e edição/exclusão ao proprietário.
+Publique o conteúdo de `firestore.rules` no banco `default`. As regras permitem leitura pública das doações, restringem o gerenciamento ao proprietário e protegem as solicitações de interesse.
+
+Pelo terminal, após autenticar o Firebase CLI:
+
+```bash
+npx firebase-tools login
+npx firebase-tools deploy --only firestore:rules
+```
 
 ## 4. Validação
 
@@ -37,6 +44,7 @@ Após configurar, execute:
 
 ```bash
 npm install
+npm test
 npm run dev
 ```
 
