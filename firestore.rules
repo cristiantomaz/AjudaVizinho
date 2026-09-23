@@ -10,6 +10,14 @@ service cloud.firestore {
       return signedIn() && resourceData.ownerId == request.auth.uid;
     }
 
+    function validDonationImage(data) {
+      return !('imageData' in data)
+        || data.imageData == ''
+        || (data.imageData is string
+          && data.imageData.size() <= 500000
+          && data.imageData.matches('^data:image/(jpeg|png|webp);base64,.*$'));
+    }
+
     match /users/{userId} {
       allow create, read, update: if signedIn() && request.auth.uid == userId;
       allow delete: if false;
@@ -19,10 +27,12 @@ service cloud.firestore {
       allow read: if true;
       allow create: if signedIn()
         && request.resource.data.ownerId == request.auth.uid
-        && request.resource.data.status == 'available';
+        && request.resource.data.status == 'available'
+        && validDonationImage(request.resource.data);
       allow update: if owns(resource.data)
         && request.resource.data.ownerId == resource.data.ownerId
-        && request.resource.data.status in ['available', 'reserved', 'donated'];
+        && request.resource.data.status in ['available', 'reserved', 'donated']
+        && validDonationImage(request.resource.data);
       allow delete: if owns(resource.data);
     }
 

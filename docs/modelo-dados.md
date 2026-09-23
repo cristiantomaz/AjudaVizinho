@@ -20,6 +20,7 @@ erDiagram
     string category
     string neighborhood
     string description
+    string imageData
     string status
     timestamp createdAt
   }
@@ -41,7 +42,7 @@ O identificador do documento é o UID do Firebase Authentication. Apenas o próp
 
 ### `donations`
 
-Estados permitidos: `available`, `reserved` e `donated`. A leitura é pública; criação exige autenticação; edição e exclusão são exclusivas do proprietário.
+Estados permitidos: `available`, `reserved` e `donated`. A leitura é pública; criação exige autenticação; edição e exclusão são exclusivas do proprietário. O campo opcional `imageData` contém uma imagem comprimida em Data URL, limitada pelas regras de segurança a 500.000 caracteres e pelo aplicativo a 360 KB de dados.
 
 ### `interests`
 
@@ -54,3 +55,4 @@ O identificador combina doação e usuário interessado, impedindo duplicidade. 
 3. Cada usuário possui no máximo uma solicitação por doação.
 4. O aceite altera a doação para reservada.
 5. Somente o proprietário pode editar, excluir ou concluir a doação.
+6. Fotos são opcionais, aceitam JPG, PNG ou WebP e são reduzidas no navegador antes da persistência.

@@ -10,6 +10,7 @@ import {
   updateDoc,
 } from 'firebase/firestore'
 import { db, isFirebaseConfigured } from './firebase.js'
+import { validateStoredImage } from './imageService.js'
 
 const DONATIONS_KEY = 'ajudavizinho:demo-donations'
 
@@ -34,6 +35,7 @@ export async function listDonations(fallback = []) {
 export async function createDonation(data, user) {
   const donation = {
     ...data,
+    imageData: validateStoredImage(data.imageData),
     ownerId: user.id,
     ownerName: user.name,
     status: 'available',
@@ -62,6 +64,7 @@ export async function updateDonation(donation, changes, user) {
     neighborhood: changes.neighborhood.trim(),
     description: changes.description.trim(),
     icon: changes.icon,
+    imageData: validateStoredImage(changes.imageData),
   }
 
   if (isFirebaseConfigured) {

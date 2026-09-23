@@ -14,6 +14,7 @@ Itens em boas condições são descartados enquanto pessoas próximas podem prec
 
 - cadastro, login e logout;
 - criação, edição e exclusão de doações;
+- foto opcional do produto, com redução automática antes do envio;
 - busca por texto e filtro por categoria;
 - estados disponível, reservado e doado;
 - solicitação de interesse sem duplicidade;
@@ -62,6 +63,8 @@ O GitHub Actions executa testes e build automaticamente em Pull Requests e atual
 ## Firebase
 
 O projeto usa o banco Firestore nomeado `default`. As regras de segurança estão em `firestore.rules`.
+
+Para manter o projeto acadêmico no plano gratuito, a foto é comprimida no navegador e armazenada como dado da própria doação. O sistema aceita JPG, PNG e WebP de até 8 MB e limita a versão persistida a 360 KB.
 
 ```bash
 npx firebase-tools login
