@@ -13,8 +13,6 @@
 | Nome | GitHub | Papel Principal |
 |---|---|---|
 | Cristian Tomaz | [@cristiantomaz](https://github.com/cristiantomaz) | Full Stack / documentação |
-| Integrante 2 | A definir | Backend / banco de dados |
-| Integrante 3 | A definir | Frontend / UX |
 
 ### Link do Repositório
 
@@ -58,7 +56,7 @@ A validação com 2–3 potenciais usuários será registrada em `docs/validacao
 
 ### 1. Descrição da Solução
 
-O AjudaVizinho será uma aplicação web responsiva para organizar doações locais. Após criar uma conta, o usuário poderá publicar um item com título, descrição, categoria, imagem e bairro. Outros usuários poderão consultar o catálogo, pesquisar itens e demonstrar interesse.
+O AjudaVizinho será uma aplicação web responsiva para organizar doações locais. Após criar uma conta, o usuário poderá publicar um item com título, descrição, categoria e bairro. Outros usuários poderão consultar o catálogo, pesquisar itens e demonstrar interesse.
 
 O doador visualizará as solicitações e poderá aceitar ou recusar uma delas. O item terá estados definidos — disponível, reservado e doado — para evitar solicitações sobre itens que já foram destinados.
 
@@ -66,23 +64,23 @@ A proposta prioriza simplicidade, impacto social e um MVP demonstrável. Chat in
 
 ### 2. Funcionalidades Principais (MVP)
 
-- [ ] **Autenticação de usuários**
+- [x] **Autenticação de usuários**
   - Descrição: cadastro, login e logout.
   - Valor: identifica os participantes e protege ações de gerenciamento.
 
-- [ ] **Gerenciamento de doações**
+- [x] **Gerenciamento de doações**
   - Descrição: criar, visualizar, editar e excluir publicações próprias.
   - Valor: permite ao doador manter os dados e a disponibilidade corretos.
 
-- [ ] **Catálogo com busca e filtros**
+- [x] **Catálogo com busca e filtros**
   - Descrição: listar itens disponíveis e pesquisar por título ou categoria.
   - Valor: reduz o esforço para encontrar uma doação útil.
 
-- [ ] **Manifestação de interesse**
+- [x] **Manifestação de interesse**
   - Descrição: solicitar um item e permitir que o doador aceite ou recuse.
   - Valor: estabelece o fluxo entre publicação e destinação.
 
-- [ ] **Acompanhamento de status**
+- [x] **Acompanhamento de status**
   - Descrição: marcar itens como disponível, reservado ou doado.
   - Valor: torna o andamento da doação claro para todos.
 
@@ -127,8 +125,7 @@ A proposta prioriza simplicidade, impacto social e um MVP demonstrável. Chat in
 | Estilização | CSS responsivo | Baixa complexidade e controle visual direto |
 | Backend | Firebase Authentication e SDK | Reduz infraestrutura sem eliminar autenticação e regras de negócio |
 | Banco de dados | Cloud Firestore | Banco NoSQL adequado ao MVP e integrado ao Firebase |
-| Armazenamento | Firebase Storage | Suporte às imagens das doações |
-| Hospedagem | Vercel ou GitHub Pages | Publicação simples e gratuita para demonstração |
+| Hospedagem | Firebase Hosting | Publicação estática integrada ao projeto Firebase |
 | Gestão | GitHub | Código, Issues, branches, Pull Requests e documentação |
 
 ### 3. Requisitos Não Funcionais
@@ -152,22 +149,22 @@ A proposta prioriza simplicidade, impacto social e um MVP demonstrável. Chat in
 - [x] Criar repositório e documentação inicial;
 - [ ] Validar a ideia com 2–3 potenciais usuários;
 - [ ] Criar wireframes e modelo de dados;
-- [ ] Configurar React e Firebase.
+- [x] Configurar React e Firebase.
 
 #### Mês 2: Desenvolvimento
 
-- [ ] Implementar autenticação;
-- [ ] Implementar CRUD de doações;
-- [ ] Implementar catálogo, busca e filtros;
-- [ ] Implementar manifestação de interesse;
-- [ ] Criar testes básicos e tratar erros.
+- [x] Implementar autenticação;
+- [x] Implementar CRUD de doações;
+- [x] Implementar catálogo, busca e filtros;
+- [x] Implementar manifestação de interesse;
+- [x] Criar testes básicos e tratar erros.
 
 #### Mês 3: Finalização
 
-- [ ] Refinar interface e acessibilidade;
+- [x] Refinar interface e acessibilidade;
 - [ ] Testar com usuários e registrar feedback;
-- [ ] Corrigir bugs;
-- [ ] Completar documentação e manual;
+- [x] Corrigir bugs críticos conhecidos;
+- [x] Completar documentação e manual;
 - [ ] Realizar deploy e preparar apresentação.
 
 ### Sprint inicial acelerada
@@ -184,22 +181,20 @@ A proposta prioriza simplicidade, impacto social e um MVP demonstrável. Chat in
 | Membro | Responsabilidade principal | Responsabilidade secundária |
 |---|---|---|
 | Cristian Tomaz | Integração Full Stack | Documentação |
-| Integrante 2 | Backend e banco de dados | Testes |
-| Integrante 3 | Frontend e UX | Validação com usuários |
 
-A divisão será atualizada após a confirmação dos nomes e perfis do GitHub.
+O projeto é desenvolvido individualmente, conforme a possibilidade de grupos de 1 a 8 participantes prevista no guia da disciplina.
 
 ---
 
 ## 📊 Métricas de Sucesso
 
-- [ ] Todas as cinco funcionalidades do MVP funcionando;
+- [x] Todas as cinco funcionalidades do MVP funcionando;
 - [ ] Fluxo publicação → interesse → aceitação → conclusão demonstrável;
 - [ ] Pelo menos três pessoas realizando teste de usabilidade;
 - [ ] Página principal carregando em até 3 segundos em conexão estável;
-- [ ] Ausência de bugs críticos conhecidos;
-- [ ] README suficiente para outro desenvolvedor executar o projeto;
-- [ ] Issues, branches, Pull Requests e commits descritivos;
+- [x] Ausência de bugs críticos conhecidos;
+- [x] README suficiente para outro desenvolvedor executar o projeto;
+- [x] Issues, branches, Pull Requests e commits descritivos;
 - [ ] Pelo menos 20 commits reais e focados ao longo do desenvolvimento.
 
 ### Metas quantitativas de demonstração
@@ -237,14 +232,14 @@ Serão armazenados em `docs/wireframes/`.
 
 ## 🔒 Considerações de Segurança
 
-- [ ] Autenticação gerenciada pelo Firebase;
-- [ ] Senhas não armazenadas pela aplicação;
-- [ ] Regras do Firestore por usuário e propriedade do documento;
-- [ ] Validação e limitação dos campos;
-- [ ] Proteção contra conteúdo HTML não confiável;
-- [ ] HTTPS na hospedagem;
-- [ ] Variáveis de ambiente fora do controle de versão;
-- [ ] Nenhum dado de contato sensível exibido publicamente.
+- [x] Autenticação gerenciada pelo Firebase;
+- [x] Senhas não armazenadas pela aplicação;
+- [x] Regras do Firestore por usuário e propriedade do documento;
+- [x] Validação e limitação dos campos;
+- [x] Proteção contra conteúdo HTML não confiável;
+- [ ] HTTPS na hospedagem (pendente de deploy);
+- [x] Variáveis de ambiente fora do controle de versão;
+- [x] Nenhum dado de contato sensível exibido publicamente.
 
 ---
 
@@ -267,7 +262,7 @@ O projeto pode começar em um bairro ou comunidade universitária e crescer por 
 - [ ] Comunidade de contribuidores;
 - [ ] Parcerias com instituições;
 - [ ] Moderação comunitária;
-- [ ] Hospedagem de baixo custo.
+- [x] Hospedagem de baixo custo preparada.
 
 ---
 
@@ -304,7 +299,7 @@ O projeto pode começar em um bairro ou comunidade universitária e crescer por 
 - [x] Funcionalidades do MVP definidas;
 - [x] Stack escolhida e justificada;
 - [x] Cronograma definido;
-- [ ] Dados de todos os membros e divisão final confirmados;
+- [x] Dados do responsável e divisão final confirmados;
 - [x] Repositório criado;
 - [x] Impacto social claro;
 - [x] Referências iniciais incluídas;

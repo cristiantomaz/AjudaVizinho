@@ -47,8 +47,11 @@ Sem essas variáveis, o sistema inicia automaticamente no modo de demonstração
 ```bash
 npm test
 npm run build
+npm run validate
 npm run preview
 ```
+
+`npm run validate` executa todos os testes automatizados e o build de produção. Use esse comando antes de abrir uma Pull Request ou publicar uma release.
 
 O GitHub Actions executa testes e build automaticamente em Pull Requests e atualizações das branches principais.
 

@@ -8,6 +8,7 @@
     "build": "vite build",
     "test": "vitest run",
     "test:watch": "vitest",
+    "validate": "npm test && npm run build",
     "preview": "vite preview"
   },
   "dependencies": {
