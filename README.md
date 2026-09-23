@@ -1,61 +1,99 @@
 # AjudaVizinho
 
-> Plataforma web que conecta pessoas que desejam doar itens a pessoas da mesma comunidade que precisam deles.
+> Plataforma web para conectar pessoas que desejam doar itens a moradores da mesma comunidade que precisam deles.
 
-## 🎯 Problema
+## Aplicação publicada
 
-Itens em boas condições são descartados ou ficam sem uso enquanto pessoas próximas podem precisar deles. Grupos informais de mensagens dificultam a organização, a pesquisa e o acompanhamento das doações.
+Acesse o MVP em [https://ajudavizinho.web.app](https://ajudavizinho.web.app).
 
-## 💡 Solução
+## Problema e solução
 
-O AjudaVizinho organiza doações locais em uma aplicação web responsiva. Usuários poderão publicar itens, consultar doações disponíveis, pesquisar por categoria e demonstrar interesse.
+Itens em boas condições são descartados enquanto pessoas próximas podem precisar deles. O AjudaVizinho organiza publicações, buscas, solicitações e decisões de doação em um fluxo simples, gratuito e local.
 
-## ✅ MVP
+## MVP entregue
 
-1. Cadastro e autenticação de usuários.
-2. Cadastro e gerenciamento de doações.
-3. Busca e filtro de itens disponíveis.
-4. Manifestação e gerenciamento de interesse.
-5. Acompanhamento do status da doação.
+- cadastro, login e logout;
+- criação, edição e exclusão de doações;
+- busca por texto e filtro por categoria;
+- estados disponível, reservado e doado;
+- solicitação de interesse sem duplicidade;
+- aceite ou recusa pelo doador;
+- reserva automática após o aceite;
+- painel com doações e solicitações do usuário;
+- interface responsiva e acessível;
+- testes e integração contínua no GitHub Actions.
 
-## 👥 Equipe
+## Tecnologias
 
-| Integrante | GitHub | Papel inicial |
+- React e Vite;
+- Firebase Authentication;
+- Cloud Firestore;
+- Firebase Hosting;
+- Vitest;
+- GitHub Issues, branches, Pull Requests e Actions.
+
+## Executar localmente
+
+Pré-requisitos: Node.js 20 ou superior e npm.
+
+```bash
+npm install
+cp .env.example .env
+npm run dev
+```
+
+Preencha o `.env` com a configuração pública do aplicativo Web no Firebase. Esse arquivo é ignorado pelo Git e não deve ser enviado ao repositório.
+
+Sem essas variáveis, o sistema inicia automaticamente no modo de demonstração local.
+
+## Testes e build
+
+```bash
+npm test
+npm run build
+npm run validate
+npm run preview
+```
+
+`npm run validate` executa todos os testes automatizados e o build de produção. Use esse comando antes de abrir uma Pull Request ou publicar uma release.
+
+O GitHub Actions executa testes e build automaticamente em Pull Requests e atualizações das branches principais.
+
+## Firebase
+
+O projeto usa o banco Firestore nomeado `default`. As regras de segurança estão em `firestore.rules`.
+
+```bash
+npx firebase-tools login
+npx firebase-tools deploy --only firestore:rules,hosting
+```
+
+Consulte [Configuração do Firebase](docs/configuracao-firebase.md) e [Publicação](docs/publicacao.md).
+
+## Documentação
+
+- [Proposta](docs/proposta.md)
+- [Arquitetura](docs/arquitetura.md)
+- [Modelo de dados](docs/modelo-dados.md)
+- [Manual do usuário](docs/manual-usuario.md)
+- [Roteiro de demonstração](docs/roteiro-demonstracao.md)
+- [Configuração do Firebase](docs/configuracao-firebase.md)
+- [Publicação](docs/publicacao.md)
+
+## Equipe
+
+| Integrante | GitHub | Papel |
 |---|---|---|
-| Cristian Tomaz | [@cristiantomaz](https://github.com/cristiantomaz) | Full Stack / documentação |
-| Integrante 2 | A definir | Backend / banco de dados |
-| Integrante 3 | A definir | Frontend / UX |
+| Cristian Tomaz | [@cristiantomaz](https://github.com/cristiantomaz) | Full Stack e documentação |
 
-> Os dados e papéis dos demais integrantes serão atualizados após confirmação da equipe.
+## Status
 
-## 🛠️ Tecnologias planejadas
+MVP funcional. Autenticação e persistência foram validadas no Firebase; os fluxos críticos possuem testes automatizados.
 
-- Frontend: React + Vite
-- Estilização: CSS responsivo
-- Backend como serviço: Firebase
-- Autenticação: Firebase Authentication
-- Banco de dados: Cloud Firestore
-- Hospedagem: Vercel ou GitHub Pages
-- Gestão: GitHub Issues, branches e Pull Requests
+## Diretrizes acadêmicas
 
-## 🚀 Como executar
+Projeto desenvolvido conforme o [Guia Rápido da disciplina](https://github.com/luiscarlosjunior/aulas-graduacao/blob/master/05-engenharia-software/disciplina-projetos/guia-rapido.md), com commits incrementais, Issues, Pull Requests, testes e documentação contínua.
 
-As instruções serão adicionadas após a configuração inicial da aplicação.
+## Licença
 
-## 📂 Documentação
-
-- [Proposta do projeto](docs/proposta.md)
-- Wireframes: `docs/wireframes/`
-- Diagramas: `docs/diagramas/`
-
-## 📊 Status
-
-🟡 Em planejamento e configuração inicial.
-
-## 📚 Diretrizes acadêmicas
-
-Projeto desenvolvido conforme o [Guia Rápido da disciplina](https://github.com/luiscarlosjunior/aulas-graduacao/blob/master/05-engenharia-software/disciplina-projetos/guia-rapido.md) e o template oficial de proposta.
-
-## 📄 Licença
-
-Projeto acadêmico. Licença a definir.
+Projeto acadêmico para fins educacionais.
