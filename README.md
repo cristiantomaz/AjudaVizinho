@@ -2,6 +2,10 @@
 
 > Plataforma web para conectar pessoas que desejam doar itens a moradores da mesma comunidade que precisam deles.
 
+## Aplicação publicada
+
+Acesse o MVP em [https://ajudavizinho.web.app](https://ajudavizinho.web.app).
+
 ## Problema e solução
 
 Itens em boas condições são descartados enquanto pessoas próximas podem precisar deles. O AjudaVizinho organiza publicações, buscas, solicitações e decisões de doação em um fluxo simples, gratuito e local.
