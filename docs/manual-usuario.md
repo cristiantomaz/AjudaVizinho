@@ -32,7 +32,17 @@ Em **Minha conta**, o usuário encontra:
 - solicitações recebidas;
 - interesses enviados.
 
-O doador pode aceitar ou recusar. Ao aceitar, o item fica reservado. A publicação pode ser editada, excluída ou marcada como doada.
+O doador pode aceitar ou recusar. Ao aceitar, o item fica reservado e o botão **Abrir chat** aparece para as duas pessoas.
+
+## Combinar a retirada pelo chat
+
+1. Acesse **Minha conta**.
+2. Em uma solicitação aceita, clique em **Abrir chat**.
+3. Combine dia, horário e local seguro para a retirada.
+
+O chat é privado entre o doador e a pessoa cuja solicitação foi aceita. Mensagens novas aparecem no contador de **Minha conta**. Quando a doação for marcada como **Doado**, a conversa permanece visível como histórico, mas deixa de aceitar novas mensagens.
+
+A publicação pode ser editada, excluída ou marcada como doada.
 
 ## Estados
 
