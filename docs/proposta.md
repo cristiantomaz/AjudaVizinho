@@ -189,7 +189,7 @@ O projeto é desenvolvido individualmente, conforme a possibilidade de grupos de
 ## 📊 Métricas de Sucesso
 
 - [x] Todas as cinco funcionalidades do MVP funcionando;
-- [ ] Fluxo publicação → interesse → aceitação → conclusão demonstrável;
+- [x] Fluxo publicação → interesse → aceitação → conclusão demonstrável;
 - [ ] Pelo menos três pessoas realizando teste de usabilidade;
 - [ ] Página principal carregando em até 3 segundos em conexão estável;
 - [x] Ausência de bugs críticos conhecidos;
@@ -237,7 +237,7 @@ Serão armazenados em `docs/wireframes/`.
 - [x] Regras do Firestore por usuário e propriedade do documento;
 - [x] Validação e limitação dos campos;
 - [x] Proteção contra conteúdo HTML não confiável;
-- [ ] HTTPS na hospedagem (pendente de deploy);
+- [x] HTTPS na hospedagem;
 - [x] Variáveis de ambiente fora do controle de versão;
 - [x] Nenhum dado de contato sensível exibido publicamente.
 
@@ -321,4 +321,4 @@ Aguardando avaliação.
 
 ## 📝 Notas e Observações
 
-O escopo será protegido durante o MVP. Funcionalidades futuras só serão iniciadas após a conclusão e os testes das funcionalidades essenciais.
+O MVP foi publicado em https://ajudavizinho.web.app, com os fluxos essenciais, fotos opcionais e 17 testes automatizados aprovados. Notificações, chat e uma área de pedidos permanecem registradas como melhorias pós-MVP nas Issues #18, #19 e #20.

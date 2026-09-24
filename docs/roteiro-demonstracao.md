@@ -5,7 +5,7 @@ Tempo sugerido: 5 a 7 minutos.
 1. Apresentar o problema social e a proposta do AjudaVizinho.
 2. Mostrar responsividade, busca e filtro por categoria.
 3. Criar ou acessar a conta do doador.
-4. Publicar uma doação e mostrar edição e estados.
+4. Publicar uma doação com foto opcional e mostrar edição e estados.
 5. Entrar com uma segunda conta e demonstrar interesse.
 6. Voltar à conta do doador e aceitar a solicitação.
 7. Mostrar a reserva automática e marcar o item como doado.
@@ -18,8 +18,10 @@ Se houver indisponibilidade de internet, executar sem `.env` no modo demonstraç
 
 ## Evidências técnicas
 
-- testes: `npm test`;
+- aplicação publicada: https://ajudavizinho.web.app;
+- testes: 5 arquivos e 17 testes automatizados aprovados com `npm test`;
 - build: `npm run build`;
 - regras: `firestore.rules`;
 - documentação: pasta `docs/`;
-- histórico: Pull Requests e Issues do repositório.
+- histórico: Pull Requests e Issues do repositório;
+- próximos incrementos: notificações (#18), chat (#19) e área de pedidos (#20).
