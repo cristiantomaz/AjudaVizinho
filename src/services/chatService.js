@@ -6,7 +6,6 @@ import {
   onSnapshot,
   query,
   serverTimestamp,
-  updateDoc,
   where,
   writeBatch,
 } from 'firebase/firestore'
