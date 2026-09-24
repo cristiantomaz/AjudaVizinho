@@ -41,6 +41,7 @@ service cloud.firestore {
         && request.resource.data.interestedUserId == request.auth.uid
         && request.resource.data.ownerId != request.auth.uid
         && request.resource.data.status == 'pending'
+        && request.resource.data.ownerSeen == false
         && get(/databases/$(database)/documents/donations/$(request.resource.data.donationId)).data.ownerId == request.resource.data.ownerId
         && get(/databases/$(database)/documents/donations/$(request.resource.data.donationId)).data.status == 'available';
       allow read: if signedIn()
@@ -48,8 +49,11 @@ service cloud.firestore {
           || resource.data.ownerId == request.auth.uid);
       allow update: if signedIn()
         && resource.data.ownerId == request.auth.uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
-        && request.resource.data.status in ['accepted', 'rejected'];
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'ownerSeen', 'updatedAt'])
+        && request.resource.data.ownerSeen is bool
+        && ((request.resource.data.status == resource.data.status
+            && request.resource.data.ownerSeen == true)
+          || request.resource.data.status in ['accepted', 'rejected']);
       allow delete: if signedIn()
         && (resource.data.interestedUserId == request.auth.uid
           || resource.data.ownerId == request.auth.uid);

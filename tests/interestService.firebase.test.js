@@ -7,6 +7,7 @@ vi.mock('firebase/firestore', () => ({
   collection: vi.fn(),
   doc,
   getDocs: vi.fn(),
+  onSnapshot: vi.fn(),
   query: vi.fn(),
   serverTimestamp: vi.fn(() => 'timestamp'),
   setDoc,
@@ -38,7 +39,8 @@ describe('interesses no Firebase', () => {
 
     expect(doc).toHaveBeenCalledWith(expect.anything(), 'interests', 'item-1_interessado')
     expect(setDoc).toHaveBeenCalledOnce()
-    expect(result).toMatchObject({ id: 'item-1_interessado', status: 'pending' })
+    expect(result).toMatchObject({ id: 'item-1_interessado', status: 'pending', ownerSeen: false })
+    expect(setDoc.mock.calls[0][1]).toMatchObject({ ownerSeen: false })
   })
 
   it('traduz uma recusa das regras para uma orientação compreensível', async () => {

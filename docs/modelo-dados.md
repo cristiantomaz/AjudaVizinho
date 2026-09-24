@@ -30,6 +30,7 @@ erDiagram
     string ownerId
     string interestedUserId
     string status
+    boolean ownerSeen
     timestamp createdAt
   }
 ```
@@ -46,7 +47,7 @@ Estados permitidos: `available`, `reserved` e `donated`. A leitura é pública; 
 
 ### `interests`
 
-O identificador combina doação e usuário interessado, impedindo duplicidade. Estados: `pending`, `accepted` e `rejected`. Somente as duas partes envolvidas podem ler; apenas o doador decide.
+O identificador combina doação e usuário interessado, impedindo duplicidade. Estados: `pending`, `accepted` e `rejected`. O campo `ownerSeen` controla o destaque da notificação sem criar registros duplicados. Somente as duas partes envolvidas podem ler; apenas o doador decide.
 
 ## Regras de negócio
 

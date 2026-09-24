@@ -24,6 +24,8 @@ Abra os detalhes de um item disponível e clique em **Tenho interesse**. Não é
 
 ## Gerenciar a conta
 
+Quando alguém demonstra interesse, o doador recebe um aviso e um contador em **Minha conta**. Solicitações ainda não visualizadas ficam destacadas até o painel ser aberto.
+
 Em **Minha conta**, o usuário encontra:
 
 - suas doações;
