@@ -41,6 +41,7 @@ service cloud.firestore {
         && request.resource.data.interestedUserId == request.auth.uid
         && request.resource.data.ownerId != request.auth.uid
         && request.resource.data.status == 'pending'
+        && request.resource.data.ownerSeen == false
         && get(/databases/$(database)/documents/donations/$(request.resource.data.donationId)).data.ownerId == request.resource.data.ownerId
         && get(/databases/$(database)/documents/donations/$(request.resource.data.donationId)).data.status == 'available';
       allow read: if signedIn()
@@ -48,11 +49,40 @@ service cloud.firestore {
           || resource.data.ownerId == request.auth.uid);
       allow update: if signedIn()
         && resource.data.ownerId == request.auth.uid
-        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'updatedAt'])
-        && request.resource.data.status in ['accepted', 'rejected'];
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status', 'ownerSeen', 'updatedAt'])
+        && request.resource.data.ownerSeen is bool
+        && ((request.resource.data.status == resource.data.status
+            && request.resource.data.ownerSeen == true)
+          || request.resource.data.status in ['accepted', 'rejected']);
       allow delete: if signedIn()
         && (resource.data.interestedUserId == request.auth.uid
           || resource.data.ownerId == request.auth.uid);
+    }
+
+    match /messages/{messageId} {
+      allow create: if signedIn()
+        && request.resource.data.senderId == request.auth.uid
+        && request.resource.data.senderId in [
+          request.resource.data.ownerId,
+          request.resource.data.interestedUserId
+        ]
+        && request.resource.data.text is string
+        && request.resource.data.text.size() > 0
+        && request.resource.data.text.size() <= 500
+        && request.resource.data.seenByRecipient == false
+        && get(/databases/$(database)/documents/interests/$(request.resource.data.interestId)).data.status == 'accepted'
+        && get(/databases/$(database)/documents/interests/$(request.resource.data.interestId)).data.ownerId == request.resource.data.ownerId
+        && get(/databases/$(database)/documents/interests/$(request.resource.data.interestId)).data.interestedUserId == request.resource.data.interestedUserId
+        && get(/databases/$(database)/documents/interests/$(request.resource.data.interestId)).data.donationId == request.resource.data.donationId
+        && get(/databases/$(database)/documents/donations/$(request.resource.data.donationId)).data.status == 'reserved';
+      allow read: if signedIn()
+        && request.auth.uid in [resource.data.ownerId, resource.data.interestedUserId];
+      allow update: if signedIn()
+        && request.auth.uid in [resource.data.ownerId, resource.data.interestedUserId]
+        && request.auth.uid != resource.data.senderId
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['seenByRecipient'])
+        && request.resource.data.seenByRecipient == true;
+      allow delete: if false;
     }
   }
 }
