@@ -144,6 +144,24 @@ footer { min-height: 100px; display: flex; justify-content: space-between; gap: 
 .muted { color: var(--muted); }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
+.request-list article { align-items: stretch; flex-direction: column; }
+.request-summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.chat-button { align-self: flex-start; padding: 9px 13px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #9fbab0; border-radius: 999px; color: var(--green); background: white; font-weight: 800; cursor: pointer; }
+.chat-button span { padding: 3px 7px; border-radius: 999px; color: white; background: #c94d3f; font-size: .7rem; }
+.chat-modal { width: min(100%, 680px); }
+.chat-help { margin-top: 0; }
+.chat-messages { min-height: 220px; max-height: 42vh; margin: 20px 0; padding: 16px; display: flex; flex-direction: column; gap: 10px; overflow-y: auto; border: 1px solid var(--line); border-radius: 18px; background: #f5f7f4; }
+.chat-message { max-width: 82%; align-self: flex-start; padding: 11px 13px; border-radius: 4px 16px 16px; color: var(--ink); background: white; box-shadow: 0 4px 12px rgba(23,53,46,.06); }
+.chat-message.own { align-self: flex-end; border-radius: 16px 4px 16px 16px; background: #e6f3db; }
+.chat-message strong, .chat-message time { display: block; font-size: .72rem; }
+.chat-message p { margin: 5px 0; overflow-wrap: anywhere; white-space: pre-wrap; }
+.chat-message time { color: var(--muted); text-align: right; }
+.chat-form { display: grid; gap: 10px; }
+.chat-form textarea { width: 100%; padding: 12px; border: 1px solid #cbd7d1; border-radius: 13px; color: var(--ink); background: white; resize: vertical; }
+.chat-form > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.chat-form small { margin: 0; }
+.chat-closed { padding: 12px 14px; border-radius: 12px; color: #675521; background: #fff3c9; }
+
 @media (max-width: 1050px) {
   .donation-grid { grid-template-columns: repeat(2, 1fr); }
   .hero { grid-template-columns: 1fr; padding-top: 70px; }
