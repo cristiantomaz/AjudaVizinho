@@ -92,7 +92,9 @@ Consulte [Configuração do Firebase](docs/configuracao-firebase.md) e [Publica�
 
 ## Status
 
-MVP funcional. Autenticação e persistência foram validadas no Firebase; os fluxos críticos possuem testes automatizados.
+MVP funcional e publicado. Autenticação, persistência, fotos e fluxo de interesses foram validados no Firebase; 5 arquivos de teste somam 17 testes automatizados aprovados.
+
+Melhorias pós-MVP estão registradas nas Issues [#18 — notificações](https://github.com/cristiantomaz/AjudaVizinho/issues/18), [#19 — chat](https://github.com/cristiantomaz/AjudaVizinho/issues/19) e [#20 — área de pedidos](https://github.com/cristiantomaz/AjudaVizinho/issues/20).
 
 ## Diretrizes acadêmicas
 
