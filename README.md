@@ -88,7 +88,7 @@ Consulte [Configuração do Firebase](docs/configuracao-firebase.md) e [Publica�
 | Integrante | GitHub | Papel |
 |---|---|---|
 | Cristian Tomaz | [@cristiantomaz](https://github.com/cristiantomaz) | Full Stack e documentação |
-| Vitor Pissiquelli | [@pissiquellivitor-cloud](https://github.com/pissiquellivitor-cloud) | Desenvolvedor back-end e QA teste |
+| Vitor Pissiquelli | [@pissiquellivitor-cloud](https://github.com/pissiquellivitor-cloud) | Desenvolvedor back-end e QA |
 
 ## Status
 
